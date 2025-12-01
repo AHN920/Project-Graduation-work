@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>204호 정보 허브 - 키오스크</title>
+    <!-- Tailwind CSS CDN 로드 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter 폰트 설정 -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8; /* 은은한 배경색 */
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 1rem;
+        }
+
+        /* 키오스크 세로 화면 시뮬레이션: 최대 너비를 제한하여 세로로 긴 느낌을 줍니다. */
+        .kiosk-container {
+            width: 100%;
+            max-width: 480px; /* 세로형 태블릿/키오스크 화면 폭 */
+            min-height: 95vh;
+            background-color: white;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border-radius: 1.5rem;
+            overflow: hidden; /* 스크롤바는 내부 컨텐츠에만 적용 */
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 탭 버튼 스타일 */
+        .tab-button {
+            transition: all 0.3s ease;
+            cursor: pointer;
+            @apply px-4 py-3 text-lg font-semibold text-gray-600 border-b-4 border-transparent hover:bg-gray-100;
+        }
+
+        /* 활성화된 탭 버튼 스타일 */
+        .tab-button.active {
+            @apply text-indigo-700 border-indigo-500 bg-indigo-50;
+        }
+
+        /* 스크롤바 커스터마이징 (Webkit 기반 브라우저용) */
+        .scrollable-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .scrollable-content::-webkit-scrollbar-thumb {
+            background-color: #cbd5e1;
+            border-radius: 10px;
+        }
+
+        .scrollable-content::-webkit-scrollbar-track {
+            background-color: #f8fafc;
+        }
+    </style>
+</head>
+<body>
+
+<div id="kioskContainer" class="kiosk-container">
+
+    <!-- 상단 헤더 및 실시간 시간 표시 -->
+    <header class="p-6 bg-indigo-600 text-white rounded-t-[1.5rem] shadow-lg">
+        <h1 class="text-3xl font-extrabold text-center tracking-tight mb-1">
+            204호 정보 허브
+        </h1>
+        <p id="timeDisplay" class="text-xl font-light text-center opacity-90">
+            <!-- 실시간 시간과 날짜가 여기에 표시됩니다. -->
+        </p>
+    </header>
+
+    <!-- 탭 네비게이션 -->
+    <nav class="flex justify-around border-b border-gray-200 bg-white sticky top-0 z-10">
+        <button class="tab-button active flex-1" data-tab="notices">
+            <i class="fas fa-bullhorn mr-2"></i> 공지사항
+        </button>
+        <button class="tab-button flex-1" data-tab="schedule">
+            <i class="fas fa-calendar-alt mr-2"></i> 금주 일정
+        </button>
+        <button class="tab-button flex-1" data-tab="quicklinks">
+            <i class="fas fa-link mr-2"></i> 바로가기
+        </button>
+    </nav>
+
+    <!-- 메인 컨텐츠 영역 (세로 스크롤 가능) -->
+    <main class="flex-1 overflow-y-auto scrollable-content p-4">
+
+        <!-- 1. 공지사항 탭 -->
+        <div id="notices" class="tab-content space-y-4">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4 border-l-4 border-indigo-500 pl-3">📢 중요 공지</h2>
+            
+            <!-- 공지사항 카드 1 -->
+            <div class="bg-yellow-50 p-4 rounded-xl shadow-md border-l-8 border-yellow-500 hover:shadow-lg transition duration-300">
+                <p class="text-xs text-gray-500 mb-1">2025.12.01 | 관리자</p>
+                <h3 class="text-xl font-semibold text-yellow-800 mb-2">실습 장비 정기 점검 안내 (12/5)</h3>
+                <p class="text-gray-700">금요일 오후 5시부터 8시까지 204호 모든 PC 및 네트워크 장비의 정기 점검이 진행됩니다. 이 시간 동안 장비 사용이 불가하니 참고 바랍니다.</p>
+            </div>
+            
+            <!-- 공지사항 카드 2 -->
+            <div class="bg-white p-4 rounded-xl shadow-md border-l-8 border-indigo-500 hover:shadow-lg transition duration-300">
+                <p class="text-xs text-gray-500 mb-1">2025.11.28 | 조교</p>
+                <h3 class="text-xl font-semibold text-indigo-700 mb-2">프로젝트 최종 발표 관련 서류 제출 마감</h3>
+                <p class="text-gray-700">최종 프로젝트 발표 자료 및 보고서 제출 마감일이 12월 10일(수)까지입니다. 기간 내 미제출 시 불이익이 발생할 수 있습니다.</p>
+            </div>
+
+            <!-- 공지사항 카드 3 -->
+            <div class="bg-white p-4 rounded-xl shadow-md border-l-8 border-green-500 hover:shadow-lg transition duration-300">
+                <p class="text-xs text-gray-500 mb-1">2025.11.25 | 시설팀</p>
+                <h3 class="text-xl font-semibold text-green-700 mb-2">난방 시스템 가동 시작</h3>
+                <p class="text-gray-700">금일부터 204호 난방 시스템이 정상 가동됩니다. 실내 온도가 너무 높거나 낮을 경우 관리자에게 연락 바랍니다.</p>
+            </div>
+        </div>
+
+        <!-- 2. 금주 일정 탭 -->
+        <div id="schedule" class="tab-content hidden space-y-4">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4 border-l-4 border-indigo-500 pl-3">🗓️ 금주 주요 일정</h2>
+            
+            <ul class="divide-y divide-gray-200 bg-white rounded-xl shadow-md">
+                <li class="p-4 flex items-start space-x-3 hover:bg-gray-50">
+                    <div class="text-2xl text-red-500 w-10 flex-shrink-0">월</div>
+                    <div>
+                        <p class="font-bold text-lg">12월 2일 (월)</p>
+                        <p class="text-gray-600">오후 2시: 임베디드 시스템 세미나 (204호)</p>
+                    </div>
+                </li>
+                <li class="p-4 flex items-start space-x-3 hover:bg-gray-50">
+                    <div class="text-2xl text-blue-500 w-10 flex-shrink-0">화</div>
+                    <div>
+                        <p class="font-bold text-lg">12월 3일 (화)</p>
+                        <p class="text-gray-600">종일: 팀 프로젝트 중간 보고서 제출 마감</p>
+                    </div>
+                </li>
+                <li class="p-4 flex items-start space-x-3 hover:bg-gray-50">
+                    <div class="text-2xl text-green-500 w-10 flex-shrink-0">수</div>
+                    <div>
+                        <p class="font-bold text-lg">12월 4일 (수)</p>
+                        <p class="text-gray-600">오전 10시: 장비 대여 반납일</p>
+                    </div>
+                </li>
+                <li class="p-4 flex items-start space-x-3 hover:bg-gray-50">
+                    <div class="text-2xl text-yellow-500 w-10 flex-shrink-0">금</div>
+                    <div>
+                        <p class="font-bold text-lg">12월 6일 (금)</p>
+                        <p class="text-gray-600">오후 5시 ~ 8시: 장비 정기 점검 (사용 불가)</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- 3. 바로가기 탭 -->
+        <div id="quicklinks" class="tab-content hidden space-y-4">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4 border-l-4 border-indigo-500 pl-3">🔗 주요 바로가기</h2>
+            
+            <div class="grid grid-cols-2 gap-4">
+                <!-- 링크 카드 1 -->
+                <a href="#" onclick="showModal('장비 대여 시스템'); return false;" class="link-card bg-indigo-500 text-white p-5 rounded-xl shadow-lg flex flex-col items-center justify-center transition duration-300 hover:bg-indigo-600 hover:shadow-xl active:scale-95">
+                    <i class="fas fa-tools text-3xl mb-2"></i>
+                    <span class="text-lg font-bold text-center">장비 대여</span>
+                </a>
+                <!-- 링크 카드 2 -->
+                <a href="#" onclick="showModal('온라인 강의 플랫폼'); return false;" class="link-card bg-purple-500 text-white p-5 rounded-xl shadow-lg flex flex-col items-center justify-center transition duration-300 hover:bg-purple-600 hover:shadow-xl active:scale-95">
+                    <i class="fas fa-chalkboard-teacher text-3xl mb-2"></i>
+                    <span class="text-lg font-bold text-center">온라인 강의</span>
+                </a>
+                <!-- 링크 카드 3 -->
+                <a href="#" onclick="showModal('시설 이용 규칙'); return false;" class="link-card bg-teal-500 text-white p-5 rounded-xl shadow-lg flex flex-col items-center justify-center transition duration-300 hover:bg-teal-600 hover:shadow-xl active:scale-95">
+                    <i class="fas fa-shield-alt text-3xl mb-2"></i>
+                    <span class="text-lg font-bold text-center">이용 규칙</span>
+                </a>
+                <!-- 링크 카드 4 -->
+                <a href="#" onclick="showModal('담당 조교 연락처'); return false;" class="link-card bg-red-500 text-white p-5 rounded-xl shadow-lg flex flex-col items-center justify-center transition duration-300 hover:bg-red-600 hover:shadow-xl active:scale-95">
+                    <i class="fas fa-headset text-3xl mb-2"></i>
+                    <span class="text-lg font-bold text-center">문의하기</span>
+                </a>
+            </div>
+            
+        </div>
+
+    </main>
+    
+    <!-- 푸터 (고정 위치) -->
+    <footer class="p-4 bg-gray-800 text-white text-center text-sm rounded-b-[1.5rem]">
+        <p>204호 키오스크 | 문의: OOO (내선 1234)</p>
+    </footer>
+</div>
+
+<!-- 모달 (Alert 대체용) -->
+<div id="customModal" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center p-4 z-50 hidden transition-opacity duration-300">
+    <div class="bg-white p-6 rounded-xl shadow-2xl w-full max-w-sm transform transition-transform duration-300 scale-95">
+        <h3 id="modalTitle" class="text-xl font-bold mb-3 text-indigo-700">알림</h3>
+        <p id="modalMessage" class="text-gray-700 mb-5">선택한 서비스로 이동합니다.</p>
+        <button onclick="hideModal()" class="w-full bg-indigo-600 text-white py-2 rounded-lg font-semibold hover:bg-indigo-700 transition duration-150">확인</button>
+    </div>
+</div>
+
+
+<script>
+    // Font Awesome 아이콘 라이브러리 로드
+    const faScript = document.createElement('script');
+    faScript.src = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js";
+    document.head.appendChild(faScript);
+
+    // 1. 실시간 시계 업데이트 함수
+    function updateClock() {
+        const now = new Date();
+        
+        // 날짜 포맷 (YYYY년 MM월 DD일 요일)
+        const dateOptions = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'short' };
+        const dateString = now.toLocaleDateString('ko-KR', dateOptions);
+
+        // 시간 포맷 (HH:MM:SS)
+        const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+        const timeString = now.toLocaleTimeString('ko-KR', timeOptions);
+        
+        document.getElementById('timeDisplay').textContent = `${dateString} | ${timeString}`;
+    }
+
+    // 초기 실행 및 1초마다 업데이트
+    updateClock();
+    setInterval(updateClock, 1000);
+
+    // 2. 탭 전환 기능
+    document.querySelectorAll('.tab-button').forEach(button => {
+        button.addEventListener('click', function() {
+            const targetTabId = this.getAttribute('data-tab');
+            
+            // 모든 버튼에서 active 클래스 제거
+            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+            // 클릭된 버튼에 active 클래스 추가
+            this.classList.add('active');
+
+            // 모든 컨텐츠 숨기기
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
+            
+            // 해당 컨텐츠 보여주기
+            document.getElementById(targetTabId).classList.remove('hidden');
+        });
+    });
+
+    // 3. 모달 제어 (Alert 대체)
+    const modal = document.getElementById('customModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalMessage = document.getElementById('modalMessage');
+
+    function showModal(action) {
+        // 실제 백엔드 연동이 없는 프로토타입이므로, 이동 대신 알림 메시지 표시
+        modalTitle.textContent = "서비스 안내";
+        modalMessage.textContent = `'${action}' 서비스는 현재 프로토타입 단계로, 실제 기능은 구현되어 있지 않습니다.`;
+        modal.classList.remove('hidden');
+        // 애니메이션 효과를 위해 잠시 후 scale-100으로 변경
+        setTimeout(() => {
+            modal.querySelector('div').classList.remove('scale-95');
+            modal.querySelector('div').classList.add('scale-100');
+            modal.style.opacity = 1;
+        }, 10);
+    }
+
+    function hideModal() {
+        modal.querySelector('div').classList.remove('scale-100');
+        modal.querySelector('div').classList.add('scale-95');
+        modal.style.opacity = 0;
+        // 애니메이션 후 hidden 클래스 추가
+        setTimeout(() => {
+            modal.classList.add('hidden');
+        }, 300);
+    }
+
+    // 초기 로딩 시 모달 숨김 처리
+    window.onload = () => {
+        hideModal(); 
+        // 키오스크가 세로 화면에서 잘 보이도록 초기 컨테이너 스타일 조정 (선택 사항)
+        const container = document.getElementById('kioskContainer');
+        container.style.width = window.innerWidth > 480 ? '480px' : '100%';
+        container.style.height = 'auto'; // 화면 크기에 맞게 조정
+    };
+</script>
+
+</body>
+</html>
